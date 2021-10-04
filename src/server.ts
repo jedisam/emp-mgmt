@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/employees', Employees);
 
-const PORT: number = 7000;
+const PORT = process.env.PORT || 7000;
 
 app.listen(PORT, () => {
   console.log(`server started on port ${PORT}`);
