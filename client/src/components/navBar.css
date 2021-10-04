@@ -1,0 +1,14 @@
+.container-par {
+  display: flex;
+  padding: 1.4rem;
+}
+
+.brand {
+  justify-content: center;
+  align-items: center;
+}
+
+.right-display {
+  justify-content: end;
+  align-items: center;
+}
