@@ -3,6 +3,8 @@ import mongoose from 'mongoose'
 import cors from "cors"
 import 'dotenv/config'
 
+import Employees from './routes/api/employeeRoute'
+
 const app = express();
 
 // Bodyparser middleware
@@ -24,6 +26,7 @@ app.get('/', (req, res) => {
   res.send('Haloo');
 });
 
+app.use('/api/employees', Employees);
 
 const PORT: number = 7000;
 
