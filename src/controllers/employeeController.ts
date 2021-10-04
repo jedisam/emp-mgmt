@@ -1,4 +1,3 @@
-// import { createOne, updateOne, getOne, getAll, deleteOne } from './handleFactory'
 import Employee from '../models/employee'
 import { Request, Response, NextFunction } from "express";
 
