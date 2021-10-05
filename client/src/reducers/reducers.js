@@ -28,12 +28,14 @@ export const employees = (state = initialState, action) => {
       };
     }
     case UPDATE_EMPLOYEE: {
-      const { employee: updatedEmployee } = payload;
+      const { id, updatedEmployeeInfo} = payload;
+      alert(id)
+      console.log("esti: ",updatedEmployeeInfo)
       return {
         ...state,
         data: state.data.map((employee) => {
-          if (employee._id === updatedEmployee._id) {
-            return updatedEmployee;
+          if (employee._id === id) {
+            return updatedEmployeeInfo;
           }
           return employee;
         }),

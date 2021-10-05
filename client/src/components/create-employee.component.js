@@ -1,32 +1,12 @@
 import { useState } from 'react';
 import { connect } from 'react-redux';
-// import { useLocation } from 'react-router-dom';
-// import DatePicker from 'react-datepicker';
-import { addEmployeeRequest } from '../thunk/thunks';
-import 'react-datepicker/dist/react-datepicker.css';
+import { createEmployee } from '../actions/employee'
 
 const CreateEmployee = ({ onCreatePressed }) => {
   const [employeeName, setEmployeeName] = useState('');
   const [employeeDob, setEmployeeDob] = useState('');
   const [employeeGender, setEmployeeGender] = useState('');
   const [employeeSalary, setEmployeeSalary] = useState(0);
-  // let location = useLocation();
-
-  // useEffect(() => {
-  //   axios
-  //     .get('http://localhost:5000/users/')
-  //     .then((response) => {
-  //       if (response.data.length > 0) {
-  //         this.setState({
-  //           users: response.data.map((user) => user.username),
-  //           username: response.data[0].username,
-  //         });
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
 
   const onChangeUsername = (e) => {
     setEmployeeName(e.target.value);
@@ -41,7 +21,7 @@ const CreateEmployee = ({ onCreatePressed }) => {
     setEmployeeSalary(e.target.value);
   };
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
 
     const newEmployee = {
@@ -51,13 +31,6 @@ const CreateEmployee = ({ onCreatePressed }) => {
       salary: employeeSalary,
     };
     onCreatePressed(newEmployee);
-
-    // console.log(newEmployee);
-
-    // axios
-    //   .post('http://localhost:7000/api/employees', newEmployee)
-    //   .then((res) => alert(res.data.status));
-
     window.location = '/';
   };
 
@@ -102,12 +75,6 @@ const CreateEmployee = ({ onCreatePressed }) => {
             value={employeeSalary}
             onChange={onChangeSalary}
           />
-          <div>
-            {/* <DatePicker
-                selected={this.state.date}
-                onChange={this.onChangeDate}
-              /> */}
-          </div>
         </div>
 
         <div className="form-group">
@@ -123,7 +90,7 @@ const CreateEmployee = ({ onCreatePressed }) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  onCreatePressed: (employee) => dispatch(addEmployeeRequest(employee)),
+  onCreatePressed: (employee) => dispatch(createEmployee(employee)),
 });
 
 export default connect(null, mapDispatchToProps)(CreateEmployee);

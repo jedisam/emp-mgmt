@@ -1,28 +1,13 @@
-import React, { useEffect, useState } from 'react';
-// import DatePicker from 'react-datepicker';
-import axios from 'axios';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { updateEmployeeRequest } from '../thunk/thunks';
-import 'react-datepicker/dist/react-datepicker.css';
+import { updateEmployee } from '../actions/employee'
 
 const EditEmployee = ({ match, onEditPressed }) => {
   const [employeeName, setEmployeeName] = useState('');
   const [employeeDob, setEmployeeDob] = useState('');
   const [employeeGender, setEmployeeGender] = useState('');
   const [employeeSalary, setEmployeeSalary] = useState(0);
-  useEffect(() => {
-    axios
-      .get('http://localhost:7000/api/employees/' + match.params.id)
-      .then((response) => {
-        setEmployeeName(response.data.name);
-        setEmployeeDob(response.data.dob);
-        setEmployeeGender(response.data.gender);
-        setEmployeeSalary(response.data.salary);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, []);
+
   const onChangeUsername = (e) => {
     setEmployeeName(e.target.value);
   };
@@ -45,14 +30,6 @@ const EditEmployee = ({ match, onEditPressed }) => {
       salary: employeeSalary,
     };
 
-    console.log(updatedEmployee);
-
-    // axios
-    //   .patch(
-    //     'http://localhost:7000/api/employees/' + match.params.id,
-    //     updatedEmployee
-    //   )
-    //   .then((res) => alert(res.data.status));
     onEditPressed(match.params.id, updatedEmployee);
     window.location = '/';
   };
@@ -64,7 +41,6 @@ const EditEmployee = ({ match, onEditPressed }) => {
         <div className="form-group">
           <label>name: </label>
           <input
-            // ref="userInput"
             required
             className="form-control"
             value={employeeName}
@@ -102,12 +78,6 @@ const EditEmployee = ({ match, onEditPressed }) => {
             placeholder={employeeSalary}
             onChange={onChangeSalary}
           />
-          <div>
-            {/* <DatePicker
-              selected={this.state.date}
-              onChange={this.onChangeDate}
-            /> */}
-          </div>
         </div>
 
         <div className="form-group">
@@ -124,7 +94,7 @@ const EditEmployee = ({ match, onEditPressed }) => {
 
 const mapDispatchToProps = (dispatch) => ({
   onEditPressed: (id, employee) =>
-    dispatch(updateEmployeeRequest(id, employee)),
+    dispatch(updateEmployee(id, employee)),
 });
 
 export default connect(null, mapDispatchToProps)(EditEmployee);

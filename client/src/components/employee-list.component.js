@@ -1,13 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import { getEmployees, getEmployeesLoading } from '../selectors/selectors';
-import {
-  addEmployeeRequest,
-  loadEmployees,
-  removeEmployeeRequest,
-} from '../thunk/thunks';
+import { loadEmployeesInProgress, removeEmployee } from '../actions/employee'
 
 const Employee = (props) => {
   return (
@@ -18,14 +13,14 @@ const Employee = (props) => {
       <td>{props.employee.salary}</td>
       <td>
         <Link to={'/edit/' + props.employee._id}>edit</Link> |{' '}
-        <a
-          href="#"
+        <button
+        style={{border: 'none', color: 'red'}}
           onClick={() => {
             props.deleteEmployee(props.employee._id);
           }}
         >
           delete
-        </a>
+        </button>
       </td>
     </tr>
   );
@@ -34,31 +29,14 @@ const Employee = (props) => {
 const EmployeeList = ({
   startLoadingEmployees,
   employeesR,
+  getEmployeesS,
   isLoading,
   onRemovePressed,
   onCreatePressed,
 }) => {
-  const [employeesList, setEmployeesList] = useState([]);
   useEffect(() => {
     startLoadingEmployees();
-    // axios
-    //   .get('http://localhost:7000/api/employees/')
-    //   .then((res) => setEmployeesList(res.data.data.data))
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-  }, []);
-  console.log('View Time: ', employeesR);
-
-  // const deleteEmployee = (id) => {
-  //   axios
-  //     .delete('http://localhost:7000/api/employees/' + id)
-  //     .then((response) => {
-  //       alert('Employee Removed');
-  //     });
-  //   const newEmployeeList = employeesList.filter((emp) => emp._id !== id);
-  //   setEmployeesList(newEmployeeList);
-  // };
+  }, [startLoadingEmployees]);
 
   const employees = () => {
     const loadingMessage = <div>Loading Employees...</div>;
@@ -99,9 +77,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  startLoadingEmployees: () => dispatch(loadEmployees()),
-  onCreatePressed: (employee) => dispatch(addEmployeeRequest(employee)),
-  onRemovePressed: (id) => dispatch(removeEmployeeRequest(id)),
+  startLoadingEmployees: () => dispatch(loadEmployeesInProgress()),
+  onRemovePressed: (id) => dispatch(removeEmployee(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeeList);
