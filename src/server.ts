@@ -1,6 +1,7 @@
 import express from "express"
 import mongoose from 'mongoose'
 import cors from "cors"
+import path from 'path'
 import 'dotenv/config'
 
 import Employees from './routes/api/employeeRoute'
@@ -21,10 +22,9 @@ connection.once('open', () => {
   console.log(`Succsessfully connected to DB`);
 });
 
-// Different routes
-app.get('/', (req, res) => {
-  res.send('Haloo');
-});
+
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/employees', Employees);
 
