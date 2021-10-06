@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getEmployees, getEmployeesLoading } from '../selectors/selectors';
 import { loadEmployeesInProgress, removeEmployee } from '../actions/employee'
+import { IEmployee, IId } from '../typeDefs'
 
-const Employee = (props) => {
+const Employee = (props: any) => {
   return (
     <tr>
       <td>{props.employee.name}</td>
@@ -26,31 +27,25 @@ const Employee = (props) => {
   );
 };
 
-const EmployeeList = ({
-  startLoadingEmployees,
-  employeesR,
-  getEmployeesS,
-  isLoading,
-  onRemovePressed,
-  onCreatePressed,
-}) => {
+const EmployeeList = (props: any) => {
+  const {startLoadingEmployees} = props 
   useEffect(() => {
     startLoadingEmployees();
   }, [startLoadingEmployees]);
 
   const employees = () => {
     const loadingMessage = <div>Loading Employees...</div>;
-    const content = employeesR.map((employee) => {
-      console.log('The Emp: ', employee);
+    const content = props.employeesR.map((employee: IEmployee) => {
+      // console.log('The Emp: ', employee);
       return (
         <Employee
           employee={employee}
-          deleteEmployee={onRemovePressed}
+          deleteEmployee={props.onRemovePressed}
           key={employee._id}
         />
       );
     });
-    return isLoading ? loadingMessage : content;
+    return props.isLoading ? loadingMessage : content;
   };
 
   return (
@@ -71,14 +66,14 @@ const EmployeeList = ({
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: any) => ({
   isLoading: getEmployeesLoading(state),
   employeesR: getEmployees(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch: any) => ({
   startLoadingEmployees: () => dispatch(loadEmployeesInProgress()),
-  onRemovePressed: (id) => dispatch(removeEmployee(id)),
+  onRemovePressed: (id: IId) => dispatch(removeEmployee(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeeList);

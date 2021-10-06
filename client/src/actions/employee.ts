@@ -1,18 +1,9 @@
-interface IEmployee {
-  name: string,
-  dob: string,
-  gender: string,
-  salary: number
-}
 
-interface IId {
-  employeeId: string
-}
+import { IEmployee, IId} from '../typeDefs'
 
-interface IId2 {
+export interface IId2 {
   id: string
 }
-
 
 export const CREATE_EMPLOYEE = 'CREATE_EMPLOYEE';
 export const createEmployee = (employee: IEmployee) => ({

@@ -1,18 +1,27 @@
-import { takeLatest, all, call, put, takeLeading } from 'redux-saga/effects';
+import * as Effects from "redux-saga/effects";
 import {
   CREATE_EMPLOYEE,
   createEmployee,
   REMOVE_EMPLOYEE,
   removeEmployee,
   UPDATE_EMPLOYEE,
-  updateEmployee,
   LOAD_EMPLOYEES_IN_PROGRESS,
   loadEmployeesSuccess,
   loadEmployeesFailure
 } from '../actions/employee';
 import { loadEmployees, addEmployeeRequest, removeEmployeeRequest, updateEmployeeRequest } from './api';
 
-function* getEmployeesSaga() {
+import { IAction } from '../typeDefs'
+
+
+const call: any = Effects.call;
+const put: any = Effects.put;
+const takeLatest: any = Effects.takeLatest;
+const takeLeading: any = Effects.takeLeading;
+const all: any = Effects.all;
+
+
+function* getEmployeesSaga(): any {
   try {
     const data = yield call(loadEmployees());
     yield put(loadEmployeesSuccess(data));
@@ -25,7 +34,7 @@ function* getAddEmployeesWatcher() {
   yield takeLatest(LOAD_EMPLOYEES_IN_PROGRESS, getEmployeesSaga);
 }
 
-function* addEmployeeSaga(action) {
+function* addEmployeeSaga(action: IAction): any {
   try {
     const data = yield call(addEmployeeRequest(action.payload));
     yield put(createEmployee(data));
@@ -39,10 +48,10 @@ function* addEmployeesWatcher() {
 }
 
 
-function* removeEmployeeSaga(action) {
+function* removeEmployeeSaga(action: IAction) {
   try {
     yield call(removeEmployeeRequest(action.payload));
-    yield put(removeEmployee());
+    yield put(removeEmployee(action.payload));
   } catch (error) {
     console.error(error)
   }
@@ -54,10 +63,10 @@ function* removeEmployeeWatcher() {
 
 
 
-function* updateEmployeeSaga(action) {
+function* updateEmployeeSaga(action: IAction) {
   try {
     yield call(updateEmployeeRequest(action.payload));
-    yield put(updateEmployee());
+    // yield put(updateEmployee());
   } catch (error) {
     console.error(error)
   }

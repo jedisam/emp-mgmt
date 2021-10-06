@@ -6,10 +6,12 @@ import {
   LOAD_EMPLOYEES_SUCCESS,
   LOAD_EMPLOYEES_FAILURE,
 } from '../actions/employee';
+import { IEmployee, IAction } from '../typeDefs'
+
 
 const initialState = { isLoading: false, data: [] };
 
-export const employees = (state = initialState, action) => {
+export const employees = (state = initialState, action: IAction) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -24,7 +26,7 @@ export const employees = (state = initialState, action) => {
       const { employeeId: employeeToRemoveId } = payload;
       return {
         ...state,
-        data: state.data.filter((emp) => emp._id !== employeeToRemoveId),
+        data: state.data.filter((emp: IEmployee) => emp._id !== employeeToRemoveId),
       };
     }
     case UPDATE_EMPLOYEE: {
@@ -33,7 +35,7 @@ export const employees = (state = initialState, action) => {
       console.log("esti: ",updatedEmployeeInfo)
       return {
         ...state,
-        data: state.data.map((employee) => {
+        data: state.data.map((employee: IEmployee) => {
           if (employee._id === id) {
             return updatedEmployeeInfo;
           }

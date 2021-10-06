@@ -1,8 +1,10 @@
 import axios from 'axios'
+import { IEmployee, IId, IEmpl} from '../typeDefs'
+import baseURL from '../constants/endPoints';
 
-export const loadEmployees = () => async dispatch => {
+export const loadEmployees = () => async (dispatch: any) => {
   try {
-    const response = await fetch('http://localhost:7000/api/employees');
+    const response = await fetch(`${baseURL}/api/employees`);
     const employees = await response.json();
     return employees.data.data;
   } catch (e) {
@@ -10,10 +12,10 @@ export const loadEmployees = () => async dispatch => {
   }
 };
 
-export const addEmployeeRequest = async (newEmployee) => {
+export const addEmployeeRequest = async (newEmployee: IEmployee) => {
   try {
     const body = JSON.stringify(newEmployee);
-    const response = await fetch('http://localhost:7000/api/employees', {
+    const response = await fetch(`${baseURL}/api/employees`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -27,10 +29,10 @@ export const addEmployeeRequest = async (newEmployee) => {
   }
 };
 
-export const removeEmployeeRequest = async (id) => {
+export const removeEmployeeRequest = async (id: IId) => {
   try {
     const eId  = id.employeeId;
-    await fetch(`http://localhost:7000/api/employees/${eId}`, {
+    await fetch(`${baseURL}/api/employees/${eId}`, {
       method: 'delete',
     });
     return
@@ -40,15 +42,15 @@ export const removeEmployeeRequest = async (id) => {
 };
 
 export const updateEmployeeRequest =
-  async (emp) => {
+  async (emp: IEmpl) => {
     try {
       const { id, updatedEmployeeInfo} = emp;
        axios
       .patch(
-        'http://localhost:7000/api/employees/' + id,
+        `${baseURL}/api/employees/${id}`,
         updatedEmployeeInfo
       )
-      .then((res) => res.data.status);
+      .then((res: any) => res.data.status);
 
     } catch (e) {
       console.log('My Error: ', e)
@@ -56,6 +58,6 @@ export const updateEmployeeRequest =
     }
   };
 
-export const displayAlert = (text) => {
+export const displayAlert = (text: string) => {
   alert(text);
 };

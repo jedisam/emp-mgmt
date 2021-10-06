@@ -1,81 +1,80 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { connect } from 'react-redux';
-import { updateEmployee } from '../actions/employee'
+import { createEmployee } from '../actions/employee'
+import { IEmployee } from '../typeDefs'
 
-const EditEmployee = ({ match, onEditPressed }) => {
+
+const CreateEmployee = (props: any) => {
   const [employeeName, setEmployeeName] = useState('');
   const [employeeDob, setEmployeeDob] = useState('');
   const [employeeGender, setEmployeeGender] = useState('');
   const [employeeSalary, setEmployeeSalary] = useState(0);
 
-  const onChangeUsername = (e) => {
+  const onChangeUsername = (e: any) => {
     setEmployeeName(e.target.value);
   };
-  const onChangeDob = (e) => {
+  const onChangeDob = (e: any) => {
     setEmployeeDob(e.target.value);
   };
-  const onChangeGender = (e) => {
+  const onChangeGender = (e: any) => {
     setEmployeeGender(e.target.value);
   };
-  const onChangeSalary = (e) => {
+  const onChangeSalary = (e: any) => {
     setEmployeeSalary(e.target.value);
   };
-  const onSubmitHandler = (e) => {
+
+  const onSubmitHandler = async (e: any) => {
     e.preventDefault();
 
-    const updatedEmployee = {
+    const newEmployee = {
       name: employeeName,
       dob: employeeDob,
       gender: employeeGender,
       salary: employeeSalary,
     };
-
-    onEditPressed(match.params.id, updatedEmployee);
-    window.location = '/';
+    props.onCreatePressed(newEmployee);
+    window.location.href = '/';
   };
 
   return (
     <div>
-      <h3>Edit Employee</h3>
+      <h3>Create New Employee</h3>
       <form onSubmit={onSubmitHandler}>
         <div className="form-group">
-          <label>name: </label>
+          <label>Name: </label>
           <input
+            type="text"
             required
             className="form-control"
             value={employeeName}
-            placeholder={employeeName}
             onChange={onChangeUsername}
           />
         </div>
         <div className="form-group">
-          <label>dob: </label>
+          <label>Date of Birth: </label>
           <input
             type="text"
             required
             className="form-control"
             value={employeeDob}
             onChange={onChangeDob}
-            placeholder={employeeDob}
           />
         </div>
         <div className="form-group">
-          <label>Gender: </label>
+          <label>Gender</label>
           <input
             type="text"
             className="form-control"
             value={employeeGender}
-            placeholder={employeeGender}
             onChange={onChangeGender}
           />
         </div>
         <div className="form-group">
-          <label>salary: </label>
+          <label>Salary</label>
           <input
             type="text"
             className="form-control"
             value={employeeSalary}
-            placeholder={employeeSalary}
             onChange={onChangeSalary}
           />
         </div>
@@ -83,7 +82,7 @@ const EditEmployee = ({ match, onEditPressed }) => {
         <div className="form-group">
           <input
             type="submit"
-            value="Edit Employee"
+            value="Add Employee"
             className="btn btn-primary"
           />
         </div>
@@ -92,9 +91,8 @@ const EditEmployee = ({ match, onEditPressed }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  onEditPressed: (id, employee) =>
-    dispatch(updateEmployee(id, employee)),
+const mapDispatchToProps = (dispatch: any) => ({
+  onCreatePressed: (employee: IEmployee) => dispatch(createEmployee(employee)),
 });
 
-export default connect(null, mapDispatchToProps)(EditEmployee);
+export default connect(null, mapDispatchToProps)(CreateEmployee);
