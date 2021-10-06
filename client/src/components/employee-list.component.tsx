@@ -32,11 +32,10 @@ const EmployeeList = (props: any) => {
   useEffect(() => {
     startLoadingEmployees();
   }, [startLoadingEmployees]);
-  console.log(props.employeesR)
   const employees = () => {
     const loadingMessage = <div>Loading Employees...</div>;
     const content = props.employeesR.map((employee: IEmployee) => {
-      console.log('The Emp: ', employee);
+      // console.log('The Emp: ', employee);
       return (
         <Employee
           employee={employee}
