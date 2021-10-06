@@ -1,2 +1,2 @@
-const baseURL: string = 'http://localhost:7000/'
+const baseURL: string = 'https://emp-mgmt1.herokuapp.com'
 export default baseURL;
