@@ -16,10 +16,6 @@ const withDevTools =
 
 const rootReducer = combineReducers(reducers);
 
-// const store = createStore(
-//   rootReducer,
-//   withDevTools(applyMiddleware(sagaMiddleware))
-// );
 
 const store = createStore(
     rootReducer,
