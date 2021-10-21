@@ -3,20 +3,24 @@ import {
   REMOVE_EMPLOYEE,
   UPDATE_EMPLOYEE,
   LOAD_EMPLOYEES_IN_PROGRESS,
+  LOAD_EMPLOYEE_IN_PROGRESS,
   LOAD_EMPLOYEES_SUCCESS,
+  LOAD_EMPLOYEE_SUCCESS,
   LOAD_EMPLOYEES_FAILURE,
+  ADD_EMPLOYEES_SUCCESS,
+  REMOVE_EMPLOYEE_SUCESS
 } from '../actions/employee';
 import { IEmployee, IAction } from '../typeDefs'
 
 
-const initialState = { isLoading: false, data: [] };
+const initialState = { isLoading: false, data: [], employee: null };
 
 export const employees = (state = initialState, action: IAction) => {
   const { type, payload } = action;
 
   switch (type) {
     case CREATE_EMPLOYEE: {
-      const { employee } = payload;
+      const employee  = payload;
       return {
         ...state,
         data: state.data.concat(employee),
@@ -29,10 +33,13 @@ export const employees = (state = initialState, action: IAction) => {
         data: state.data.filter((emp: IEmployee) => emp._id !== employeeToRemoveId),
       };
     }
+    case REMOVE_EMPLOYEE_SUCESS: {
+      return {
+        ...state
+      }
+    }
     case UPDATE_EMPLOYEE: {
       const { id, updatedEmployeeInfo} = payload;
-      alert(id)
-      console.log("esti: ",updatedEmployeeInfo)
       return {
         ...state,
         data: state.data.map((employee: IEmployee) => {
@@ -43,6 +50,14 @@ export const employees = (state = initialState, action: IAction) => {
         }),
       };
     }
+    case ADD_EMPLOYEES_SUCCESS: {
+      // const { employee } = payload;
+      return {
+        ...state,
+        isLoading: false,
+        // data: state.data.concat(employee)
+      }
+    }
     case LOAD_EMPLOYEES_SUCCESS: {
       const { employees } = payload;
       return {
@@ -51,7 +66,16 @@ export const employees = (state = initialState, action: IAction) => {
         data: employees,
       };
     }
+    case LOAD_EMPLOYEE_SUCCESS: {
+      const { employee } = payload;
+      return {
+        ...state,
+        isLoading: false,
+        employee: employee,
+      };
+    }
     case LOAD_EMPLOYEES_IN_PROGRESS:
+    case LOAD_EMPLOYEE_IN_PROGRESS:
       return {
         ...state,
         isLoading: true,

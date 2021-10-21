@@ -2,29 +2,35 @@ import axios from 'axios'
 import { IEmployee, IId, IEmpl} from '../typeDefs'
 import baseURL from '../constants/endPoints';
 
-export const loadEmployees = () => async (dispatch: any) => {
+export const loadEmployees = async () => {
   try {
-    const response = await fetch(`${baseURL}/api/employees`);
-    const employees = await response.json();
+    const response = await axios.get(`${baseURL}/api/employees`);
+    const employees: any = response.data;
     return employees.data.data;
   } catch (e) {
-    console.log(e)
+    alert('Load Error ' + e)
+    console.log('Load',e)
+  }
+};
+
+export const loadEmployee = async (id: any) => {
+  try {
+    const response = await axios.get(`${baseURL}/api/employees/${id}`);
+    const employee: any = response.data;
+    return employee.data.data;
+  } catch (e) {
+    alert('Load Error ' + e)
+    console.log('Load',e)
   }
 };
 
 export const addEmployeeRequest = async (newEmployee: IEmployee) => {
   try {
-    const body = JSON.stringify(newEmployee);
-    const response = await fetch(`${baseURL}/api/employees`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'post',
-      body,
-    });
-    const employee = await response.json();
-    return employee;
+    const response: any = await axios.post(`${baseURL}/api/employees`, newEmployee)
+   ;
+    return response.data.data.data;
   } catch (e) {
+    alert('ADD Employee Request: '+ e)
     console.log(e)
   }
 };

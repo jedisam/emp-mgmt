@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getEmployees, getEmployeesLoading } from '../selectors/selectors';
-import { loadEmployeesInProgress, removeEmployee } from '../actions/employee'
+import { loadEmployeesInProgress, removeEmployee, loadEmployeeInProgress } from '../actions/employee'
 import { IEmployee, IId } from '../typeDefs'
 
 const Employee = (props: any) => {
@@ -13,7 +13,7 @@ const Employee = (props: any) => {
       <td>{props.employee.gender}</td>
       <td>{props.employee.salary}</td>
       <td>
-        <Link to={'/edit/' + props.employee._id}>edit</Link> |{' '}
+        <Link to={'/edit/' + props.employee._id} onClick={() => {props.loadEmployee(props.employee._id)}}>edit</Link> |{' '}
         <button
         style={{border: 'none', color: 'red'}}
           onClick={() => {
@@ -39,8 +39,9 @@ const EmployeeList = (props: any) => {
       return (
         <Employee
           employee={employee}
+          loadEmployee={props.loadEmployee}
           deleteEmployee={props.onRemovePressed}
-          key={employee._id}
+          key={employee?._id}
         />
       );
     });
@@ -71,6 +72,7 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
+  loadEmployee: (id: any) => dispatch(loadEmployeeInProgress(id)),
   startLoadingEmployees: () => dispatch(loadEmployeesInProgress()),
   onRemovePressed: (id: IId) => dispatch(removeEmployee(id)),
 });

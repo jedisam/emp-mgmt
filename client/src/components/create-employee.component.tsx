@@ -33,7 +33,7 @@ const CreateEmployee = (props: any) => {
       salary: employeeSalary,
     };
     props.onCreatePressed(newEmployee);
-    window.location.href = '/';
+    // window.location.href = '/';
   };
 
   return (

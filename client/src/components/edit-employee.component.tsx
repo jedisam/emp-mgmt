@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { connect } from 'react-redux';
 import { updateEmployee } from '../actions/employee'
+import { getEmployee, getEmployeesLoading } from '../selectors/selectors';
 import { IId2 } from '../actions/employee'
 import { IEmployee } from '../typeDefs'
+import { loadEmployeeInProgress } from '../actions/employee'
 
 
 const EditEmployee = (props: any) => {
@@ -10,7 +12,6 @@ const EditEmployee = (props: any) => {
   const [employeeDob, setEmployeeDob] = useState('');
   const [employeeGender, setEmployeeGender] = useState('');
   const [employeeSalary, setEmployeeSalary] = useState(0);
-
   const onChangeUsername = (e: any) => {
     setEmployeeName(e.target.value);
   };
@@ -36,17 +37,17 @@ const EditEmployee = (props: any) => {
     props.onEditPressed(props.match.params.id, updatedEmployee);
     window.location.href = '/';
   };
-
   return (
     <div>
-      <h3>Edit Employee</h3>
+      {props.isLoading ? <p>Loading Employee Detail...</p> : <div>
+          <h3>Edit Employee</h3>
       <form onSubmit={onSubmitHandler}>
         <div className="form-group">
           <label>name: </label>
           <input
             required
             className="form-control"
-            value={employeeName}
+            placeholder={props.employee.name}
             onChange={onChangeUsername}
           />
         </div>
@@ -56,7 +57,7 @@ const EditEmployee = (props: any) => {
             type="text"
             required
             className="form-control"
-            value={employeeDob}
+            placeholder={props.employee.dob}
             onChange={onChangeDob}
           />
         </div>
@@ -65,7 +66,7 @@ const EditEmployee = (props: any) => {
           <input
             type="text"
             className="form-control"
-            value={employeeGender}
+            placeholder={props.employee.gender}
             onChange={onChangeGender}
           />
         </div>
@@ -74,7 +75,7 @@ const EditEmployee = (props: any) => {
           <input
             type="text"
             className="form-control"
-            value={employeeSalary}
+            placeholder={props.employee.salary}
             onChange={onChangeSalary}
           />
         </div>
@@ -87,13 +88,21 @@ const EditEmployee = (props: any) => {
           />
         </div>
       </form>
+        </div>    }
+      
     </div>
   );
 };
 
+const mapStateToProps = (state: any) => ({
+  employee: getEmployee(state),
+  isLoading: getEmployeesLoading(state),
+});
+
 const mapDispatchToProps = (dispatch: any) => ({
+  loadEmployee: (id: any) => dispatch(loadEmployeeInProgress(id)),
   onEditPressed: (id: IId2, employee: IEmployee) =>
     dispatch(updateEmployee(id, employee)),
 });
 
-export default connect(null, mapDispatchToProps)(EditEmployee);
+export default connect(mapStateToProps, mapDispatchToProps)(EditEmployee);
